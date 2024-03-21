@@ -24,14 +24,8 @@ Route::get('/', function () {
 
 Auth::routes();
 
+//Ignorar todas estas rutas, son para hacer pruebas
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     Route::get('/index', [OfferController::class, 'index'])->name('index'); //Muestra formulario de creacion de oferta
-//     Route::post('/createOffer', [OfferController::class, 'createOffer'])->name('createOffer'); //Crea la oferta en la base de datos
-//     Route::get('/showCreatedOffers', [OfferController::class, 'showCreatedOffers'])->name('showCreatedOffers'); //Muestra las ofertas creadas por el usuario logeado
-// });
 
 Route::middleware('auth')->group(function () {
     Route::get('/index', [OfferController::class, 'index'])->name('index');
@@ -45,3 +39,11 @@ Route::POST('loginUser', [AuthController::class, 'loginUser'])->name('loginUser'
 
 Route::get('/showOffers', [OfferController::class, 'showOffers'])->name('showOffers'); //Muestra todas las ofertas creadas
 
+Route::get('/mostrarOfertas', [OfferController::class, 'mostrarOfertas'])->name('mostrarOfertas');
+
+
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     Route::get('/index', [OfferController::class, 'index'])->name('index'); //Muestra formulario de creacion de oferta
+//     Route::post('/createOffer', [OfferController::class, 'createOffer'])->name('createOffer'); //Crea la oferta en la base de datos
+//     Route::get('/showCreatedOffers', [OfferController::class, 'showCreatedOffers'])->name('showCreatedOffers'); //Muestra las ofertas creadas por el usuario logeado
+// });

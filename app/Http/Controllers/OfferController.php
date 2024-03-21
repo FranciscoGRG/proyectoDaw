@@ -11,27 +11,56 @@ use Illuminate\Http\Response;
 
 class OfferController extends Controller
 {
-    //Funcion de prueba para insertar ofertas con imagenes
+    //Función de prueba para probar a insertar ofertas con imágenes
     public function index()
     {
         return view('Offer.index');
     }
 
-    //Esta funcion crea una oferta en la base de datos
+    //Función de prueba para mostrar las ofertas con varias imágenes
+    public function mostrarOfertas()
+    {
+        $ofertas = Offer::all();
+        return view('Offer.mostrarOfertas', ['offers' => $ofertas]);
+    }
+
+    //Esta función crea una oferta en la base de datos
     public function createOffer(Request $request)
     {
         try {
-            $images = $request->file('imagenes')->store('public/imagenes');
-            $url = Storage::url($images);
+            $urls = []; // Array para almacenar las URLs de las imágenes
 
+            if ($request->hasFile('imagenes')) {
+                foreach ($request->file('imagenes') as $image) {
+                    $path = $image->store('public/imagenes');
+                    $url = Storage::url($path);
+                    $urls[] = $url; // Añade la URL de la imagen al array
+                }
+            }
+
+            // Convertir el array de URLs a JSON para almacenarla en la base de datos
+            $imagesJson = json_encode($urls);
+
+            // Valida los datos del formulario
+            $validatedData = $request->validate([
+                'nombre' => 'required|string',
+                'descripcion' => 'required|string',
+                'fabricante' => 'required|string',
+                'talla' => 'required|string',
+                'precio' => 'required|numeric|min:0',
+                'imagenes' => 'required|array',
+                'categoria' => 'required|string',
+            ]);
+
+            //Creo la oferta
             $Offer = [
-                'name' => $request->nombre,
-                'description' => $request->descripcion,
-                'manufacturer' => $request->fabricante,
-                'size' => $request->talla,
-                'price' => $request->precio,
-                'images' => $url,
-                'category' => $request->categoria,
+                'name' => $validatedData['nombre'],
+                'description' => $validatedData['descripcion'],
+                'manufacturer' => $validatedData['fabricante'],
+                'size' => $validatedData['talla'],
+                'price' => $validatedData['precio'],
+                'images' => $imagesJson, // Almacena todas las URLs de las imágenes como JSON
+                'category' => $validatedData['categoria'],
                 'user_id' => Auth::user()->id,
             ];
 
@@ -42,22 +71,22 @@ class OfferController extends Controller
         }
     }
 
-    //Esta funcion devuelve todas las ofertas
+
+    //Esta función devuelve todas las ofertas
     public function showOffers()
     {
         $offers = Offer::all();
         return response()->json($offers);
     }
 
-    //Esta funcion devuelve todas las ofertas creadas por el usuario logeado
+    //Esta función devuelve todas las ofertas creadas por el usuario logeado
     public function showCreatedOffers()
     {
         $offers = Offer::where('user_id', Auth::user()->id)->get();
         return response()->json($offers);
     }
 
-    //Esta funcion actualiza una oferta dado su id y valores nuevos
-    //En un input oculto en el formulario de actualizar oferta se le pasa el id de la oferta junto a los campos a actualizar
+    //Esta función actualiza una oferta dado su id y valores nuevos
     public function updateOffer(Request $request)
     {
         try {
@@ -68,7 +97,7 @@ class OfferController extends Controller
                 'manufacturer' => 'sometimes|string|max:255',
                 'size' => 'sometimes|string|max:50',
                 'price' => 'sometimes|numeric|min:0',
-                'images' => 'sometimes|array', // 'sometimes' indica que el campo es opcional
+                'images' => 'sometimes|array', 
                 'category' => 'sometimes|string|max:255',
             ]);
 
@@ -78,27 +107,25 @@ class OfferController extends Controller
             // Actualiza los datos de la oferta solo si están presentes en la solicitud
             $offer->fill($validatedData)->save();
 
-            // Redirige a alguna ruta de éxito o muestra un mensaje de éxito
             return response()->json("Oferta actualizada correctamente", Response::HTTP_OK);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Error al crear la oferta: ' . $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
-    //Esta funcion elimina una oferta dado su id
+    //Esta función elimina una oferta dado su id
     public function deleteOffer(Request $request)
     {
         try {
             // Busca la oferta por su ID
             $offer = Offer::find($request->id);
 
-            // Elimina la oferta solo si está presente en la solicitud
+            // ELimina la oferta
             $offer->delete();
 
-            // Redirige a alguna ruta de éxito o muestra un mensaje de éxito
             return response()->json("Oferta eliminada correctamente", Response::HTTP_OK);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Error al borrar la oferta: '. $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+            return response()->json(['message' => 'Error al borrar la oferta: ' . $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

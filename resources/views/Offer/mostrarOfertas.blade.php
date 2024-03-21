@@ -12,9 +12,12 @@
                             <p class="card-text">{{ $offer->manufacturer }}</p>
                             <p class="card-text">{{ $offer->size }}</p>
                             <p class="card-text">{{ $offer->price }}</p>
-                            <p class="card-text">{{ $offer->category }}</p>
-                            <img src="{{ asset($offer->images) }}" class="card-img-top" alt="Imagen">
-                            {{-- <p>"{{ csrf_token() }}"</p> --}}
+                            <p cl   ass="card-text">{{ $offer->category }}</p>
+                            @if (!empty($offer->images))
+                                @foreach (json_decode($offer->images) as $image)
+                                    <img src="{{ asset($image) }}" class="card-img-top mb-4" alt="Imagen">
+                                @endforeach
+                            @endif
                         </div>
                     </div>
                 </div>

@@ -32,8 +32,9 @@
             <label for="precio">Precio:</label>
             <input type="number" name="precio" id="precio" class="form-control">
 
+            {{-- Hay que poner el name de las imagenes como array, [] --}}
             <label for="imagenes">Imágenes:</label>
-            <input type="file" name="imagenes" id="imagenes" class="form-control">
+            <input type="file" name="imagenes[]" id="imagenes[]" multiple class="form-control"> 
 
             <label for="categoria">Categoría:</label>
             <select name="categoria" id="categoria" class="form-control">
