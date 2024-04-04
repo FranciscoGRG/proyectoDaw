@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use App\Models\minion;
+use App\Models\Offer;
+use App\Models\FavoriteOutfit;
 
 class User extends Authenticatable
 {
@@ -44,8 +44,13 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function minions()
+    public function offers()
     {
-        return $this->hasMany(minion::class);
+        return $this->hasMany(offer::class);
+    }
+
+    public function favoriteOutfits()
+    {
+        return $this->hasMany(FavoriteOutfit::class);
     }
 }

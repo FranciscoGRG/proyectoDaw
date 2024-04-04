@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OfferController;
+use App\Http\Controllers\OutfitController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
@@ -32,6 +33,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/createOffer', [OfferController::class, 'createOffer'])->name('createOffer');
     Route::get('/showOffers', [OfferController::class, 'showOffers'])->name('showOffers');
     Route::get('/showCreatedOffers', [OfferController::class, 'showCreatedOffers'])->name('showCreatedOffers');
+
+    Route::get('/index.outfit', [OutfitController::class, 'index'])->name('index.outfit');
+    Route::POST('/create.outfit', [OutfitController::class, 'createOutfit'])->name('create.outfit');
+    Route::get('/show.outfit', [OutfitController::class, 'showOutfits'])->name('show.outfit');
 });
 
 Route::POST('createUser', [AuthController::class, 'createUser'])->name('createUser');
@@ -41,9 +46,3 @@ Route::get('/showOffers', [OfferController::class, 'showOffers'])->name('showOff
 
 Route::get('/mostrarOfertas', [OfferController::class, 'mostrarOfertas'])->name('mostrarOfertas');
 
-
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     Route::get('/index', [OfferController::class, 'index'])->name('index'); //Muestra formulario de creacion de oferta
-//     Route::post('/createOffer', [OfferController::class, 'createOffer'])->name('createOffer'); //Crea la oferta en la base de datos
-//     Route::get('/showCreatedOffers', [OfferController::class, 'showCreatedOffers'])->name('showCreatedOffers'); //Muestra las ofertas creadas por el usuario logeado
-// });
