@@ -46,3 +46,6 @@ Route::get('/showOffers', [OfferController::class, 'showOffers'])->name('showOff
 
 Route::get('/mostrarOfertas', [OfferController::class, 'mostrarOfertas'])->name('mostrarOfertas');
 
+Route::get('/indexPago', 'App\Http\Controllers\StripeController@index')->name('indexPago');
+Route::post('/checkout', 'App\Http\Controllers\StripeController@checkout')->name('checkout');
+Route::get('/', 'App\Http\Controllers\StripeController@success')->name('success');

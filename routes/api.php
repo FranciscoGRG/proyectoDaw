@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OfferController;
 use App\Http\Controllers\OutfitController;
+use App\Http\Controllers\StripeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,6 +33,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/show.outfit', [OutfitController::class, 'showOutfits'])->name('show.outfit'); //Devuelve los outfit del usuario
     Route::delete('/delete.outfit', [OutfitController::class, 'deleteOutfit'])->name('delete.outfit'); //Elimina un outfit
     Route::put('/update.outfit', [OfferController::class, 'updateOutfit'])->name('update.outfit'); //Actualiza el outfit en la base de datos
+
+    //Ruta para realizar el pago
+    Route::POST('/checkout', [StripeController::class, 'checkout'])->name('checkout');
 });
 
 Route::POST('register', [AuthController::class, 'createUser'])->name('register'); //Registra un nuevo usuario

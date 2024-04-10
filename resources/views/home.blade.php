@@ -20,6 +20,10 @@
                 <div class="card-body">
                     <a href="{{ route('index') }}" class="btn btn-primary">Crear oferta</a>
                 </div>
+
+                <div class="card-body">
+                    <a href="{{ route('indexPago') }}" class="btn btn-primary">Pagar</a>
+                </div>
             </div>
         </div>
     </div>
