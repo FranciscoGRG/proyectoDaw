@@ -30,15 +30,15 @@ class StripeController extends Controller
                 ],
             ],
             'mode' => 'payment',
-            'success_url' => route('showOffers'),
-            'cancel_url' => route('showOffers'),
+            'success_url' => route('index'),
+            'cancel_url' => route('index'),
         ]);
 
         return redirect()->away($session->url);
     }
 
-    // public function success()
-    // {
-    //     return view('index');
-    // }
+    public function success()
+    {
+        return view('index');
+    }
 }
