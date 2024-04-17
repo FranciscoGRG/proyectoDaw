@@ -39,8 +39,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/index.outfit', [OutfitController::class, 'index'])->name('index.outfit');
     Route::POST('/create.outfit', [OutfitController::class, 'createOutfit'])->name('create.outfit');
     Route::get('/show.outfit', [OutfitController::class, 'showOutfits'])->name('show.outfit');
-
-    Route::get('/prueba', [StripeController::class, 'prueba'])->name('prueba');
 });
 
 Route::POST('createUser', [AuthController::class, 'createUser'])->name('createUser');
