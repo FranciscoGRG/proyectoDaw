@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OfferController;
 use App\Http\Controllers\OutfitController;
+use App\Http\Controllers\StripeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
@@ -37,6 +38,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/index.outfit', [OutfitController::class, 'index'])->name('index.outfit');
     Route::POST('/create.outfit', [OutfitController::class, 'createOutfit'])->name('create.outfit');
     Route::get('/show.outfit', [OutfitController::class, 'showOutfits'])->name('show.outfit');
+
+    Route::get('/prueba', [StripeController::class, 'prueba'])->name('prueba');
 });
 
 Route::POST('createUser', [AuthController::class, 'createUser'])->name('createUser');
