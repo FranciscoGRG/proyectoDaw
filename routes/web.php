@@ -8,6 +8,7 @@ use App\Http\Controllers\StripeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
+use Stripe\Stripe;
 
 /*
 |--------------------------------------------------------------------------
