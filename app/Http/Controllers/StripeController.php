@@ -41,7 +41,6 @@ class StripeController extends Controller
     {
         return view('index');
     }
-<<<<<<< HEAD
 
     public function prueba()
     {
@@ -76,6 +75,4 @@ class StripeController extends Controller
             echo $response;
         }
     }
-=======
->>>>>>> 2151cf5c786dff65ce1a4c2b1277a43a7ce999ae
 }
