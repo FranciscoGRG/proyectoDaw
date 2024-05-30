@@ -38,7 +38,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::POST('/checkout', [StripeController::class, 'checkout'])->name('checkout');
 });
 
-Route::POST('register', [AuthController::class, 'createUser'])->name('register'); //Registra un nuevo usuario
-Route::POST('login', [AuthController::class, 'loginUser'])->name('login'); //Logea un usuario
+Route::group(['middleware' => 'cors'], function () {
+    Route::post('register', [AuthController::class, 'createUser'])->name('register');
+    Route::post('login', [AuthController::class, 'loginUser'])->name('login');
+});
 
 Route::get('/showOffers', [OfferController::class, 'showOffers'])->name('showOffers'); //Muestra todas las ofertas creadas a cualquier usuario
