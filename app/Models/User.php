@@ -22,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'profile_image',
     ];
 
     /**
@@ -52,5 +53,11 @@ class User extends Authenticatable
     public function favoriteOutfits()
     {
         return $this->hasMany(FavoriteOutfit::class);
+    }
+
+    //Relacion muchos a muchos
+    public function favorite_clothes()
+    {
+        return $this->belongsToMany(Favorite_clothe::class);
     }
 }

@@ -36,12 +36,9 @@ class StripeController extends Controller
     {
         return view('index');
     }
-}
 
 
-
-
-//Esta es la funcion actualizada para cobrar una comision del 3% al vendedor. Este necesita una cuenta de Stripe para poder recibir el dinero de la venta
+    //Esta es la funcion actualizada para cobrar una comision del 3% al vendedor. Este necesita una cuenta de Stripe para poder recibir el dinero de la venta
     // public function checkout(Request $request)
     // {
     //     Stripe::setApiKey(config('stripe.sk'));
@@ -81,3 +78,4 @@ class StripeController extends Controller
 
     //     return redirect()->away($session->url);
     // }
+}

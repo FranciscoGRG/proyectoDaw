@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('description');
             $table->string('manufacturer');
             $table->string('size');
-            $table->integer('price');
+            $table->float('price');
             $table->string('images')->nullable();
             $table->string('category');
 

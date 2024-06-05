@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FavoriteClothesController;
 use App\Http\Controllers\OfferController;
 use App\Http\Controllers\OutfitController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StripeController;
 use Illuminate\Support\Facades\Route;
 
@@ -32,13 +34,25 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::POST('/create.outfit', [OutfitController::class, 'createOutfit'])->name('create.outfit'); //Crea un outfit favorito
     Route::get('/show.outfit', [OutfitController::class, 'showOutfits'])->name('show.outfit'); //Devuelve los outfit del usuario
     Route::delete('/delete.outfit', [OutfitController::class, 'deleteOutfit'])->name('delete.outfit'); //Elimina un outfit
-    Route::put('/update.outfit', [OfferController::class, 'updateOutfit'])->name('update.outfit'); //Actualiza el outfit en la base de datos
+    Route::PUT('/update.outfit', [OutfitController::class, 'updateOutfit'])->name('update.outfit'); //Actualiza un outfit existente
+    Route::PUT('/updateLike.outfit', [OutfitController::class, 'addLike'])->name('updateLike.outfit'); //Añade un like al outfit
 
     //Ruta para realizar el pago
     Route::POST('/checkout', [StripeController::class, 'checkout'])->name('checkout');
+
+    //Ruta para las prendas favoritas
+    Route::get('/show.favoriteClothes', [FavoriteClothesController::class, 'showFavoriteClothes'])->name('show.favoriteClothes'); //Muestra las prendas favoritas del ususario logeado
+    Route::post('/add.favoriteClothes', [FavoriteClothesController::class, 'addFavoriteClothes'])->name('add.favoriteClothes'); //Guarda la prenda seleccionada como favorita
+    Route::delete('/delete.favoriteClothes', [FavoriteClothesController::class, 'deleteFavoriteClothes'])->name('delete.favoriteClothes'); //Borra la prenda favorita del usuario
+
+    //Ruta para cambiar la imagen de perfil del usuario
+    Route::PUT('/update.profile', [ProfileController::class, 'update'])->name('update.profile');
 });
 
-Route::POST('register', [AuthController::class, 'createUser'])->name('register'); //Registra un nuevo usuario
-Route::POST('login', [AuthController::class, 'loginUser'])->name('login'); //Logea un usuario
+Route::group(['middleware' => 'cors'], function () {
+    Route::post('register', [AuthController::class, 'createUser'])->name('register');
+    Route::post('login', [AuthController::class, 'loginUser'])->name('login');
+});
 
 Route::get('/showOffers', [OfferController::class, 'showOffers'])->name('showOffers'); //Muestra todas las ofertas creadas a cualquier usuario
+Route::get('/showAll.outfit', [OutfitController::class, 'showAllOutfits'])->name('showAll.outfit'); //Muestra todos los outfits creados para las valoraciones

@@ -9,8 +9,12 @@ class FavoriteOutfit extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'type', 'footwear', 'trousers', 'Tshirt', 'coat', 'complements', 'images', 'user_id'
+    protected $fillable = ['camiseta', 'pantalon', 'zapatos', 'likes', 'user_id'];
+
+    protected $casts = [
+        'camiseta' => 'array',
+        'pantalon' => 'array',
+        'zapatos' => 'array',
     ];
 
     public function user()
@@ -18,4 +22,3 @@ class FavoriteOutfit extends Model
         return $this->belongsTo(User::class);
     }
 }
-

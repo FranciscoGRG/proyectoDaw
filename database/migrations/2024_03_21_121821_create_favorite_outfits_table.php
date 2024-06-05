@@ -13,17 +13,15 @@ return new class extends Migration
     {
         Schema::create('favorite_outfits', function (Blueprint $table) {
             $table->id();
-            $table->string('type');
-            $table->string('footwear');
-            $table->string('trousers');
-            $table->string('Tshirt');
-            $table->string('coat')->nullable();
-            $table->string('complements')->nullable(); //Array de complementos
-            $table->string('images')->nullable();
 
-            $table->timestamps();
+            $table->json('camiseta');
+            $table->json('pantalon');
+            $table->json('zapatos');
+            $table->integer('likes')->nullable();
 
             $table->unsignedBigInteger('user_id');
+
+            $table->timestamps();
 
             $table->foreign('user_id')
                 ->references('id')
