@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class OutfitController extends Controller
 {
@@ -24,16 +25,35 @@ class OutfitController extends Controller
     //Esta funcion crea un outfit
     public function createOutfit(Request $request)
     {
+        // Definir las reglas de validación
+        $rules = [
+            'camiseta.camiseta_nombre' => 'required|string|max:255',
+            'camiseta.camiseta_precio' => 'required|numeric|min:0',
+            'camiseta.camiseta_imagen' => 'required|url',
+            'camiseta.camiseta_url' => 'required|url',
+            'pantalon.pantalon_nombre' => 'required|string|max:255',
+            'pantalon.pantalon_precio' => 'required|numeric|min:0',
+            'pantalon.pantalon_imagen' => 'required|url',
+            'pantalon.pantalon_url' => 'required|url',
+            'zapatos.zapatos_nombre' => 'required|string|max:255',
+            'zapatos.zapatos_precio' => 'required|numeric|min:0',
+            'zapatos.zapatos_imagen' => 'required|url',
+            'zapatos.zapatos_url' => 'required|url',
+        ];
+
+        // Realizar la validación
+        $validator = Validator::make($request->all(), $rules);
+
+        // Comprobar si la validación falla
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
+        }
 
         $camiseta = $request->camiseta;
         $pantalon = $request->pantalon;
         $zapatos = $request->zapatos;
 
-
-        // return response()->json($zapatos['zapatos_imagen']);
-
         try {
-
             $outfit = new FavoriteOutfit();
             $outfit->camiseta = [
                 'nombre' => $camiseta['camiseta_nombre'],
@@ -55,16 +75,13 @@ class OutfitController extends Controller
             ];
             $outfit->user_id = Auth::id();
 
-
-
             $outfit->save();
 
             return response()->json(['message' => 'Outfit creado correctamente.'], 200);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Error al crear el outfit favorito: ' . $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+            return response()->json(['message' => 'Error al crear el outfit favorito: ' . $e->getMessage()], 500);
         }
     }
-
     //Esta funcion devuelve los outfits favoritos del usuario logeado
     public function showOutfits()
     {

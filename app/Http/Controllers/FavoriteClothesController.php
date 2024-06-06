@@ -17,7 +17,6 @@ class FavoriteClothesController extends Controller
     }
 
 
-    //Conprobar si funciona
     public function addFavoriteClothes(Request $request)
     {
         // Validar los datos de la solicitud

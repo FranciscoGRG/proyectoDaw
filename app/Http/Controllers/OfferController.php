@@ -91,7 +91,7 @@ class OfferController extends Controller
         try {
             // Valida los datos del formulario
             $validatedData = $request->validate([
-                'name' => 'sometimes|string|max:255', // 'sometimes' indica que el campo es opcional
+                'name' => 'sometimes|string|max:255', 
                 'description' => 'sometimes|string',
                 'manufacturer' => 'sometimes|string|max:255',
                 'size' => 'sometimes|string|max:50',

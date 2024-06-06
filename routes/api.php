@@ -6,6 +6,7 @@ use App\Http\Controllers\OfferController;
 use App\Http\Controllers\OutfitController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StripeController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -56,3 +57,5 @@ Route::group(['middleware' => 'cors'], function () {
 
 Route::get('/showOffers', [OfferController::class, 'showOffers'])->name('showOffers'); //Muestra todas las ofertas creadas a cualquier usuario
 Route::get('/showAll.outfit', [OutfitController::class, 'showAllOutfits'])->name('showAll.outfit'); //Muestra todos los outfits creados para las valoraciones
+
+Route::get('/getUser/{id}', [UserController::class, 'getUserById'])->name('getUser'); //Devuelve un usuario por ID
