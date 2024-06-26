@@ -25,6 +25,8 @@ class OutfitController extends Controller
     //Esta funcion crea un outfit
     public function createOutfit(Request $request)
     {
+
+        // return response()->json($request);
         // Definir las reglas de validación
         $rules = [
             'camiseta.camiseta_nombre' => 'required|string|max:255',
@@ -73,6 +75,7 @@ class OutfitController extends Controller
                 'imagen' => $zapatos['zapatos_imagen'],
                 'url' => $zapatos['zapatos_url'],
             ];
+            $outfit->likes = 0;
             $outfit->user_id = Auth::id();
 
             $outfit->save();
@@ -94,11 +97,13 @@ class OutfitController extends Controller
         return response()->json($outfits);
     }
 
-    public function deleteOutfit(Request $request)
+    public function deleteOutfit($id)
     {
+        // return response()->json($id);
+
         try {
             // Busca la oferta por su ID
-            $outfit = FavoriteOutfit::find($request->outfit_id);
+            $outfit = FavoriteOutfit::find($id);
 
             // ELimina la oferta
             $outfit->delete();
@@ -167,9 +172,14 @@ class OutfitController extends Controller
 
     public function addLike(Request $request)
     {
-        $outfit = FavoriteOutfit::find($request->outfit_id);
+        $outfit = FavoriteOutfit::find($request->id);
         $outfit->likes = $outfit->likes + 1;
         $outfit->save();
         return response()->json($outfit);
+    }
+
+    public function addFavOutfit(Request $request)
+    {
+        
     }
 }

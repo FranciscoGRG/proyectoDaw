@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Favorite_clothe;
+use App\Models\FavoriteOutfit;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -19,31 +20,71 @@ class FavoriteClothesController extends Controller
 
     public function addFavoriteClothes(Request $request)
     {
-        // Validar los datos de la solicitud
-        $validatedData = $request->validate([
-            'nombre' => 'required|string|max:255',
-            'precio' => 'required|numeric',
-            'imagen' => 'required|url',
-            'URL' => 'required|url',
-        ]);
+        // // Validar los datos de la solicitud
+        // $validatedData = $request->validate([
+        //     'nombre' => 'required|string|max:255',
+        //     'precio' => 'required|numeric',
+        //     'imagen' => 'required|url',
+        //     'URL' => 'required|url',
+        // ]);
 
-        // Crear una nueva instancia de FavoriteClothes
-        $favoriteClothes = new Favorite_clothe();
-        $favoriteClothes->nombre = $validatedData['nombre'];
-        $favoriteClothes->precio = $validatedData['precio'];
-        $favoriteClothes->imagen = $validatedData['imagen'];
-        $favoriteClothes->URL = $validatedData['URL'];
+        // // Crear una nueva instancia de FavoriteClothes
+        // $favoriteClothes = new Favorite_clothe();
+        // $favoriteClothes->nombre = $validatedData['nombre'];
+        // $favoriteClothes->precio = $validatedData['precio'];
+        // $favoriteClothes->imagen = $validatedData['imagen'];
+        // $favoriteClothes->URL = $validatedData['URL'];
 
-        // Guardar la prenda favorita en la base de datos
-        $favoriteClothes->save();
+        // // Guardar la prenda favorita en la base de datos
+        // $favoriteClothes->save();
 
-        // Obtener el usuario autenticado
-        $user = Auth::user();
+        // // Obtener el usuario autenticado
+        // $user = Auth::user();
 
-        // Asociar la prenda favorita con el usuario
-        $user->favorite_clothes()->attach($favoriteClothes->id);
+        // // Asociar la prenda favorita con el usuario
+        // $user->favorite_clothes()->attach($favoriteClothes->id);
 
-        return response()->json(['message' => 'Prenda favorita añadida correctamente.'], 200);
+        // return response()->json(['message' => 'Prenda favorita añadida correctamente.'], 200);
+
+        $camiseta = $request->camiseta;
+        $pantalon = $request->pantalon;
+        $zapatos = $request->zapatos;
+
+        // return response()->json($request);
+
+        try {
+            $outfit = new Favorite_clothe();
+            $outfit->camiseta = [
+                'nombre' => $camiseta['camiseta_nombre'],
+                'precio' => $camiseta['camiseta_precio'],
+                'imagen' => $camiseta['camiseta_imagen'],
+                'url' => $camiseta['camiseta_url'],
+            ];
+            $outfit->pantalon = [
+                'nombre' => $pantalon['pantalon_nombre'],
+                'precio' => $pantalon['pantalon_precio'],
+                'imagen' => $pantalon['pantalon_imagen'],
+                'url' => $pantalon['pantalon_url'],
+            ];
+            $outfit->zapatos = [
+                'nombre' => $zapatos['zapatos_nombre'],
+                'precio' => $zapatos['zapatos_precio'],
+                'imagen' => $zapatos['zapatos_imagen'],
+                'url' => $zapatos['zapatos_url'],
+            ];
+            $outfit->creador = $request->user_id;
+            $outfit->outfit_id = $request->outfit_id;
+            // return response()->json($camiseta);
+            $outfit->save();
+
+            $user = Auth::user();
+
+            $user->favorite_clothes()->attach($outfit->id);
+
+            return response()->json(['message' => 'Outfit añadido a fav correctamente.'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error al crear el outfit favorito: ' . $e->getMessage()], 500);
+        }
     }
 
     public function indexFavoriteClothes()
@@ -56,6 +97,10 @@ class FavoriteClothesController extends Controller
         try {
             // Obtener el usuario autenticado
             $user = Auth::user();
+
+            $outfitfav = FavoriteOutfit::find($request->outfit_id);
+            $outfitfav->likes = $outfitfav->likes - 1;
+            $outfitfav->save();
 
             // Busca la prenda favorita por su ID
             $favoriteClothes = Favorite_clothe::find($request->id);

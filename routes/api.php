@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ClotheController;
 use App\Http\Controllers\FavoriteClothesController;
 use App\Http\Controllers\OfferController;
 use App\Http\Controllers\OutfitController;
@@ -34,7 +35,7 @@ Route::middleware('auth:sanctum')->group(function () {
     //Grupo de rutas de outfits
     Route::POST('/create.outfit', [OutfitController::class, 'createOutfit'])->name('create.outfit'); //Crea un outfit favorito
     Route::get('/show.outfit', [OutfitController::class, 'showOutfits'])->name('show.outfit'); //Devuelve los outfit del usuario
-    Route::delete('/delete.outfit', [OutfitController::class, 'deleteOutfit'])->name('delete.outfit'); //Elimina un outfit
+    Route::delete('/delete.outfit/{id}', [OutfitController::class, 'deleteOutfit'])->name('delete.outfit'); //Elimina un outfit
     Route::PUT('/update.outfit', [OutfitController::class, 'updateOutfit'])->name('update.outfit'); //Actualiza un outfit existente
     Route::PUT('/updateLike.outfit', [OutfitController::class, 'addLike'])->name('updateLike.outfit'); //Añade un like al outfit
 
@@ -48,6 +49,15 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //Ruta para cambiar la imagen de perfil del usuario
     Route::PUT('/update.profile', [ProfileController::class, 'update'])->name('update.profile');
+    Route::get('/get.profile', [ProfileController::class, 'getProfileImga'])->name('get.profile');
+
+    //Ruta para realizar el pago de los productos
+    Route::post('/checkout', 'App\Http\Controllers\StripeController@checkout')->name('checkout');
+
+    Route::get('/getUser', [UserController::class, 'getUser'])->name('getUser'); //Devuelve al usuario Logeado
+
+    //Ruta para obtener un outfit a partir de los filtros
+    Route::POST('/getOutfit', [ClotheController::class, 'getOutfit'])->name('getOutfit'); //Devuelve al usuario Logeado
 });
 
 Route::group(['middleware' => 'cors'], function () {

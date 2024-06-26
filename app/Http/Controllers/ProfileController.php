@@ -16,21 +16,23 @@ class ProfileController extends Controller
     public function update(Request $request)
     {
         $request->validate([
-            'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'profile_image' => 'nullable|string', // Validate that profile_image is a base64 string
         ]);
 
         $user = Auth::user();
 
-        if ($request->hasFile('profile_image')) {
+        if ($request->input('profile_image')) {
             // Borra la imagen anterior si existe
             if ($user->profile_image) {
                 Storage::delete('public/profile_images/' . $user->profile_image);
             }
 
-            // Sube la nueva imagen
-            $file = $request->file('profile_image');
-            $filename = time() . '.' . $file->getClientOriginalExtension();
-            $file->storeAs('public/profile_images', $filename);
+            // Decodifica la imagen base64 y guarda el archivo
+            $imageData = $request->input('profile_image');
+            $filename = time() . '.png';
+            $imagePath = 'public/profile_images/' . $filename;
+
+            Storage::put($imagePath, base64_decode($imageData));
 
             // Actualiza el campo profile_image del usuario
             $user->profile_image = $filename;
@@ -41,6 +43,12 @@ class ProfileController extends Controller
 
         $user->save();
 
-        return redirect()->route('index.profile')->with('success', 'Perfil actualizado exitosamente.');
+        return response()->json(['profileImage' => $user->profile_image]);
+    }
+
+    public function getProfileImga()
+    {
+        $user = Auth::user();
+        return response()->json(['profileImage' => $user->profile_image]);
     }
 }

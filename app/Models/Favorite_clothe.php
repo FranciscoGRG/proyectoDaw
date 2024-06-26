@@ -10,7 +10,13 @@ class Favorite_clothe extends Model
     use HasFactory;
 
     protected $fillable = [
-        'nombre', 'precio', 'imagen', 'URL'
+        'camiseta', 'pantalon', 'zapatos', 'creador', 'outit_id'
+    ];
+
+    protected $casts = [
+        'camiseta' => 'array',
+        'pantalon' => 'array',
+        'zapatos' => 'array',
     ];
 
     //Realcion muchos a muchos

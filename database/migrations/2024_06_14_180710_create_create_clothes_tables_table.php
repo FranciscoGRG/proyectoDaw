@@ -11,14 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('favorite_clothes', function (Blueprint $table) {
+        Schema::create('create_clothes_tables', function (Blueprint $table) {
             $table->id();
 
-            $table->json('camiseta');
-            $table->json('pantalon');
-            $table->json('zapatos');
-            $table->integer('creador');
-            $table->integer('outfit_id');
+            $table->string('nombre');
+            $table->string('genero');
+            $table->string('tipo');
+            $table->string('largo');
+            $table->string('color');
+            $table->float('precio');
+            $table->string('img');
+            $table->string('url');
 
             $table->timestamps();
         });
@@ -29,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('favorite_clothes');
+        Schema::dropIfExists('create_clothes_tables');
     }
 };

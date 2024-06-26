@@ -21,15 +21,15 @@ class StripeController extends Controller
                         ],
                         'unit_amount' => $request->precio,
                     ],
-                    'quantity' => $request->cantidad,
+                    'quantity' => 1,
                 ],
             ],
             'mode' => 'payment',
-            'success_url' => route('index'),
-            'cancel_url' => route('index'),
+            'success_url' => 'http://localhost:5173/',
+            'cancel_url' => 'http://localhost:5173/',
         ]);
 
-        return redirect()->away($session->url);
+        return response()->json($session->url);
     }
 
     public function success()
